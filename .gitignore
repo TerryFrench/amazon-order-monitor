@@ -1,0 +1,19 @@
+# Local AI-tooling workspace config
+.claude/
+.myco/
+
+# Packaging artifacts
+*.zip
+*.crx
+*.pem
+
+# OS droppings
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.bak
+*.swp

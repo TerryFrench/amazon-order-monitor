@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Order Monitor",
+  "version": "1.0.3",
+  "description": "Monitors your Amazon 'Your Orders' page on a jittered schedule, notifies and emails you (via your own Apps Script relay) when an order changes. CSV export included.",
+  "icons": {
+    "16": "icons/aom16.png",
+    "48": "icons/aom48.png",
+    "128": "icons/aom128.png"
+  },
+  "permissions": [
+    "alarms",
+    "storage",
+    "idle",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://www.amazon.com/*",
+    "https://script.google.com/*",
+    "https://script.googleusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background/sw.js",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Amazon Order Monitor",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/aom16.png",
+      "48": "icons/aom48.png",
+      "128": "icons/aom128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.com/your-orders*",
+        "https://www.amazon.com/gp/css/order-history*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

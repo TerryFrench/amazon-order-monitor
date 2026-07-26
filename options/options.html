@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Amazon Order Monitor — Options</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      max-width: 680px;
+      color: #222;
+    }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .sub { color: #666; font-size: 13px; margin: 0 0 20px; }
+    fieldset {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 0 0 16px;
+      padding: 12px 14px;
+    }
+    legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    label { display: block; font-size: 13px; margin: 8px 0 2px; }
+    .hint { color: #777; font-size: 12px; margin: 2px 0 0; }
+    input[type="text"], input[type="password"], input[type="number"], input[type="url"] {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 13px;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input[type="time"] { font-size: 13px; padding: 4px 6px; }
+    .row { display: flex; gap: 12px; align-items: end; }
+    .row > div { flex: 1; }
+    .inline { display: flex; align-items: center; gap: 6px; margin: 6px 0; font-size: 13px; }
+    .inline label { margin: 0; }
+    button {
+      font-size: 13px;
+      padding: 7px 14px;
+      margin: 6px 6px 0 0;
+      cursor: pointer;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      background: #f7f7f7;
+    }
+    button.primary { background: #0b5ed7; border-color: #0b5ed7; color: #fff; }
+    #status {
+      font-size: 13px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      display: none;
+    }
+    #status.ok { display: block; background: #e6f4ea; color: #1e7e34; }
+    #status.err { display: block; background: #fdecea; color: #b02a37; }
+    #eventLog {
+      display: none;
+      font-family: monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      background: #f5f5f5;
+      padding: 8px;
+      max-height: 320px;
+      overflow: auto;
+      margin-top: 8px;
+    }
+    details { margin-top: 20px; }
+    summary { cursor: pointer; font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Amazon Order Monitor</h1>
+  <p class="sub">Options — settings are saved locally in your browser only.</p>
+
+  <fieldset>
+    <legend>Email relay (your own Apps Script)</legend>
+    <label for="relayUrl">Web app URL (ends in /exec)</label>
+    <input type="url" id="relayUrl" placeholder="https://script.google.com/macros/s/…/exec" />
+    <label for="relaySecret">Shared secret</label>
+    <input type="password" id="relaySecret" autocomplete="off" />
+    <p class="hint">
+      Generate a secret here, paste the same value into the script's
+      Script Properties as <b>SHARED_SECRET</b> (see README), then send a test email.
+    </p>
+    <button id="genSecret">Generate secret</button>
+    <button id="testEmail">Send test email</button>
+    <div class="inline">
+      <input type="checkbox" id="emailEnabled" />
+      <label for="emailEnabled">Email me when an order changes</label>
+    </div>
+    <p class="hint">Enabled automatically after a successful test email.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Schedule</legend>
+    <div class="row">
+      <div>
+        <label for="intervalMinutes">Check interval (minutes)</label>
+        <input type="number" id="intervalMinutes" min="15" max="1440" step="5" />
+      </div>
+      <div>
+        <label for="jitterPct">Jitter (±%)</label>
+        <input type="number" id="jitterPct" min="0" max="90" step="5" />
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="quietStart">Quiet hours start</label>
+        <input type="time" id="quietStart" />
+      </div>
+      <div>
+        <label for="quietEnd">Quiet hours end</label>
+        <input type="time" id="quietEnd" />
+      </div>
+    </div>
+    <p class="hint">
+      No checks between start and end (local time). Set both to the same time
+      to disable quiet hours.
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Notifications</legend>
+    <div class="inline">
+      <input type="checkbox" id="notificationsEnabled" />
+      <label for="notificationsEnabled">Desktop notifications on changes</label>
+    </div>
+    <div class="inline">
+      <input type="checkbox" id="notifyMinorChanges" />
+      <label for="notifyMinorChanges">Also notify on minor status-text changes</label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Orders page</legend>
+    <label for="ordersUrl">URL opened by "Open orders page"</label>
+    <input type="url" id="ordersUrl" />
+    <p class="hint">Keep a tab open on an Amazon "Your Orders" page — that tab is what gets checked.</p>
+  </fieldset>
+
+  <button id="save" class="primary">Save</button>
+  <button id="pauseResume">Pause monitoring</button>
+  <div id="status"></div>
+
+  <details>
+    <summary>Debug</summary>
+    <div class="inline">
+      <input type="checkbox" id="ignoreQuietHours" />
+      <label for="ignoreQuietHours">Ignore quiet hours</label>
+    </div>
+    <div class="inline">
+      <input type="checkbox" id="simulateEmptyScrape" />
+      <label for="simulateEmptyScrape">Simulate empty scrape (tests the anomaly guard)</label>
+    </div>
+    <p class="hint">Debug interval: the number field above accepts values below 15 while this section is open (min 1).</p>
+    <button id="showLog">Show event log</button>
+    <div id="eventLog"></div>
+  </details>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>
