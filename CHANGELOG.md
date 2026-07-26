@@ -8,6 +8,11 @@ noted here when it changes.
 
 ## [Unreleased]
 
+### Changed
+- Setup instructions refined from a real clean-machine walkthrough: the
+  Script Properties save-twice quirk, and how to find your script again at
+  script.google.com when updating the relay.
+
 ### Added
 - Community/project files: `CONTRIBUTING.md`, `AGENTS.md`, issue and PR
   templates, this changelog.

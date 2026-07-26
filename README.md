@@ -93,6 +93,10 @@ extension POSTs change summaries to it; the script emails you.
 4. **Project Settings** (gear icon) → **Script Properties** → add:
    - Property: `SHARED_SECRET`
    - Value: the secret you generated in step 1.
+
+   Click **Save script properties**. If an error dialog appears the first
+   time, close it and click **Save script properties** again — it works on
+   the second try (a known Apps Script quirk).
 5. **Deploy → New deployment** → type **Web app**:
    - Execute as: **Me**
    - Who has access: **Anyone**
@@ -102,8 +106,11 @@ extension POSTs change summaries to it; the script emails you.
    **Send test email**. When the test arrives, email-on-change switches on
    automatically.
 
-**Updating the relay later** (when this repo ships a new `Code.gs`): paste
-the new code over the old, save, then **Deploy → Manage deployments → ✏️
+**Updating the relay later** (when this repo ships a new `Code.gs`): go to
+[script.google.com](https://script.google.com/) and open the project you
+created during setup from the **My projects** list (e.g. **Amazon Emails**,
+or whatever you named it). Paste the new code over the old, save, then
+**Deploy → Manage deployments → ✏️
 (edit) → Version: "New version" → Deploy**. This keeps the same `/exec` URL
 — do *not* use "New deployment", which mints a different URL. Deployment
 numbers are Apps Script's own versioning; the `RELAY_VERSION` constant in
