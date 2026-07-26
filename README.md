@@ -62,8 +62,8 @@ Safety properties worth knowing:
 ---
 
 ## Install
-
-1. Clone or download this repository.
+The [wiki](https://github.com/TerryFrench/amazon-order-monitor/wiki) has a video about the install.
+1. Clone or download this repository (zip).
 2. Open `chrome://extensions`, enable **Developer mode** (top right).
 3. **Load unpacked** → select the repository folder (the one containing
    `manifest.json`).
