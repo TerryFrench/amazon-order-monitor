@@ -1,0 +1,10 @@
+{
+  "name": "amazon-order-monitor",
+  "private": true,
+  "type": "module",
+  "description": "Dev tooling only — the extension itself has no build step and no dependencies. `type: module` lets Node import the background/ ES modules for the test suite.",
+  "scripts": {
+    "test": "node tests/test.mjs"
+  },
+  "license": "MIT"
+}

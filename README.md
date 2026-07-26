@@ -234,15 +234,37 @@ on the blue "AOM", automatically.
 ## Repository layout
 
 ```
-manifest.json        MV3 manifest (module service worker)
-background/          service worker: scheduler, tab manager, differ, notifier, mailer
+manifest.json        MV3 manifest (module service worker) — extension version lives here
+background/          service worker: scheduler, tab manager, differ, notifier, mailer, icon
 content/content.js   the scraper (selectors table at the top)
 popup/               status + controls + CSV export
 options/             settings, test email, debug tools
 apps-script/Code.gs  the email relay you deploy in your Google account
-spike/               standalone experiments proving the platform mechanics (see spike/README.md)
+tests/test.mjs       unit tests for the pure modules — run: node tests/test.mjs
 docs/DEBUG.md        fast verification recipes
+AGENTS.md            architecture rules & conventions (for AI assistants and humans)
+CONTRIBUTING.md      how to report bugs, request features, and send PRs
+CHANGELOG.md         release history
 ```
+
+## Contributing & community
+
+- **Found a bug?** [Open an issue](https://github.com/TerryFrench/amazon-order-monitor/issues)
+  — and please always include your **reproduction steps** and the
+  **event log** (Options page → Debug section → **Show event log** →
+  copy/paste; redact order details if you wish). The bug-report template
+  walks you through it.
+- **Feature ideas** also go to the issues, using the feature-request
+  template (labeled `enhancement`).
+- **Help wanted — icons:** if you can design better toolbar/notification
+  icons, open a PR — or just attach your images to an issue if you're not
+  comfortable with pull requests.
+- **Forking?** Please keep a visible link back to
+  [this repository](https://github.com/TerryFrench/amazon-order-monitor)
+  in your fork's README so improvements can find their way home.
+- Tests: `node tests/test.mjs` (Node 18+, no dependencies). Guidelines:
+  [CONTRIBUTING.md](CONTRIBUTING.md) · architecture rules:
+  [AGENTS.md](AGENTS.md) · history: [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
